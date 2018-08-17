@@ -1,0 +1,2 @@
+# skk-wepyCli
+wepy-cli
