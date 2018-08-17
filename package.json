@@ -1,0 +1,27 @@
+{
+  "name": "skk-wepycli",
+  "version": "1.0.0",
+  "description": "wepy-cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./bin/undwepy-path.js 123"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softkaikai/skk-wepyCli.git"
+  },
+  "keywords": [
+    "wepy-cli",
+    "undunion"
+  ],
+  "author": "softkaikai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/softkaikai/skk-wepyCli/issues"
+  },
+  "homepage": "https://github.com/softkaikai/skk-wepyCli#readme",
+  "dependencies": {
+    "commander": "^2.17.1"
+  }
+}
