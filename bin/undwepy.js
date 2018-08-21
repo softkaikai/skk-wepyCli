@@ -5,6 +5,9 @@ const prompt = require('prompt');
 const fs = require('fs');
 const fse = require('fs-extra');
 const download = require('../tool/download');
+const logger = require('../tool/logger');
+const generator = require('../tool/generator');
+
 
 const schema = [
     {
@@ -13,6 +16,26 @@ const schema = [
         description: 'Please enter your project name',
         type: 'string',
         default: 'undunion-wepy'
+    },
+    {
+        name: 'version',
+        required: true,
+        description: 'Please enter your project version',
+        type: 'string',
+        default: '1.0.0'
+    },
+    {
+        name: 'description',
+        description: 'Please enter your project description',
+        type: 'string',
+        default: 'mini app'
+    },
+    {
+        name: 'author',
+        required: true,
+        description: 'Please enter your project author name',
+        type: 'string',
+        default: 'anonymous'
     }
 ];
 let projectName = 'undunion-wepy';
@@ -36,42 +59,43 @@ program
                     reject(err);
                     return;
                 }
-                resolve(result.projectName);
+                resolve(result);
             });
         });
-        getProjectName.then(name => {
-            projectName = name;
-            // console.log('projectName: ' + projectName);
+        getProjectName.then(result => {
+            let metadata = result;
+            projectName = result.projectName;
+            // logger.error('projectName: ' + projectName);
             fs.readdir(process.cwd(), (err, files) => {
                 if (err) {
-                    console.log('readdir: ' + err);
+                    logger.error('readdir: ' + err);
                     return;
                 }
                 if (files.includes(projectName)) {
-                    console.log(`The ${projectName} has existed!`);
+                    logger.error(`The ${projectName} has existed!`);
                     process.exit(0);
                 } else {
                     fs.mkdir(projectName, (err, result) => {
                         if (err) {/**/
-                            console.log('mkdir: ' + err);
+                            logger.error('mkdir: ' + err);
                             process.exit(0);
                         }
-                        console.log(`create dir ${projectName} successfully \n`);
+                        logger.succeed(`create dir ${projectName} successfully`);
                         // download模板文件
                         download()
                             .then((tempSrc) => {
-                                fse.copy(tempSrc, projectName)
-                                    .then(() => {console.log('copy success \n');})
-                                    .catch(err => {console.log('copy error: ' + err);})
+                                generator(metadata, tempSrc, projectName)
+                                    .then(() => {logger.succeed('copy success');})
+                                    .catch(err => {logger.error('copy error: ' + err);})
                             })
                             .catch(err => {
-                                console.log('download err: ' + err);
+                                logger.error('download err: ' + err);
                             })
                     })
                 }
             });
         }).catch(err => {
-            console.log('projectName error: ' + err);
+            logger.error('projectName error: ' + err);
         });
     });
 
