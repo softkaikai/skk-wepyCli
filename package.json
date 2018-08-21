@@ -1,6 +1,6 @@
 {
   "name": "skk-wepycli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "wepy-cli",
   "main": "index.js",
   "scripts": {
